@@ -5,12 +5,11 @@
     <legend>
       <h1>{{ question.question_text }}</h1>
       {% if error_message %} <p><sstrong>{{ error_message }} </strong></p> {% endif %}
-        {% if question.choice_set.all %}
         {% for choice in question.choice_set.all %}
         <input type="radio" name="choice" id="choice {{ forloop.counter }}" value="{{ choice.id }}"
         <label for="choice {{ forloop.counter }}">{{choice.choice_text }}</label><br/>
+        {% empty %}<p> No choices available for this question </p>
         {% endfor %}
-        {% else %}<p> No choices available for this question </p>{% endif %}
     </legend>
   </fieldset>
   {% if question.choice_set.all%}

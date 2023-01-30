@@ -7,7 +7,6 @@ from .models import Question, Choice
 # Create your views here.
 def index(request):
     latest_question_list = Question.objects.all()
-    output = ",".join([q.question_text for q in latest_question_list])
     template = loader.get_template('polls/index.html')
     context = {
         "latest_question_list": latest_question_list,
@@ -15,7 +14,8 @@ def index(request):
     return HttpResponse(template.render(context, request ))
 
 def about(request):
-    return HttpResponse("About page")
+    return render(request, 'polls/about.html', {'title': 'About Poll page', 'body':'main stuff will go here'})
+    
 
 def detail(request, question_id):
        question = get_object_or_404(Question, pk=question_id)
@@ -24,8 +24,7 @@ def detail(request, question_id):
 def results(request, question_id):
     question  = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question':question})
-    # return HttpResponse("You're looking at results for quesiton: %s" % question_id)
-
+    
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -36,4 +35,4 @@ def vote(request, question_id):
          selected_choice.votes += 1
          selected_choice.save()
          return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))     
-    # return HttpResponse("You're voting on question: %s" % question_id)
+    
